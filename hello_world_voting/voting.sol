@@ -33,7 +33,7 @@ contract Voting {
   // is equivalent to casting a vote
   function voteForCandidate(bytes32 candidate) {
     if (validCandidate(candidate) == false) throw;
-    votesReceived[candidate] += 1;
+    votesReceived[candidate] = 36;
   }
 
   function validCandidate(bytes32 candidate) returns (bool) {

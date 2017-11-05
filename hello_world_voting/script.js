@@ -8,13 +8,13 @@ compiledCode = solc.compile(code)
 abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
 VotingContract = web3.eth.contract(abiDefinition)
 byteCode = compiledCode.contracts[':Voting'].bytecode
-deployedContract = VotingContract.new(['Rama','Nick','Jose'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000})
+deployedContract = VotingContract.new(['Mikhail','Anya','Martin'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000})
 deployedContract.address
 contractInstance = VotingContract.at(deployedContract.address)
 
 // 3. Interact with the contract in the nodejs console
-contractInstance.totalVotesFor.call('Rama')
-contractInstance.voteForCandidate('Rama', {from: web3.eth.accounts[0]})
-contractInstance.voteForCandidate('Rama', {from: web3.eth.accounts[0]})
-contractInstance.voteForCandidate('Rama', {from: web3.eth.accounts[0]})
-contractInstance.totalVotesFor.call('Rama').toLocaleString()
+contractInstance.totalVotesFor.call('Mikhail')
+contractInstance.voteForCandidate('Mikhail', {from: web3.eth.accounts[0]})
+contractInstance.voteForCandidate('Mikhail', {from: web3.eth.accounts[0]})
+contractInstance.voteForCandidate('Mikhail', {from: web3.eth.accounts[0]})
+contractInstance.totalVotesFor.call('Mikhail').toLocaleString()
