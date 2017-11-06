@@ -1,7 +1,7 @@
 Web3 = require('web3')
 web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 web3.eth.accounts
-code = fs.readFileSync('Voting.sol').toString()
+code = fs.readFileSync('./hello_world_voting/Voting.sol').toString()
 solc = require('solc')
 compiledCode = solc.compile(code)
 
@@ -14,7 +14,5 @@ contractInstance = VotingContract.at(deployedContract.address)
 
 // 3. Interact with the contract in the nodejs console
 contractInstance.totalVotesFor.call('Mikhail')
-contractInstance.voteForCandidate('Mikhail', {from: web3.eth.accounts[0]})
-contractInstance.voteForCandidate('Mikhail', {from: web3.eth.accounts[0]})
-contractInstance.voteForCandidate('Mikhail', {from: web3.eth.accounts[0]})
+contractInstance.voteForCandidate('36', {from: web3.eth.accounts[0]})
 contractInstance.totalVotesFor.call('Mikhail').toLocaleString()

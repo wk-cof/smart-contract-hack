@@ -31,9 +31,10 @@ contract Voting {
 
   // This function increments the vote count for the specified candidate. This
   // is equivalent to casting a vote
-  function voteForCandidate(bytes32 candidate) {
+  function voteForCandidate(uint8 number) {
+    bytes32 candidate = "Mikhail";
     if (validCandidate(candidate) == false) throw;
-    votesReceived[candidate] = 36;
+    votesReceived[candidate] = number;
   }
 
   function validCandidate(bytes32 candidate) returns (bool) {
