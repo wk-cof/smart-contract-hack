@@ -1,6 +1,5 @@
 # SmartTrials
-> BLOCKCHAIN IN CLINICAL TRIALS DESIGN - DISTRIBUTED LEDGER TECHNOLOGY Ha
-(https://www.hackathon.com/event/hackathon-blockchain-in-clinical-trials-design---distributed-ledger-technology-38119424224)
+> [BLOCKCHAIN IN CLINICAL TRIALS DESIGN - DISTRIBUTED LEDGER TECHNOLOGY HACKATHON](https://www.hackathon.com/event/hackathon-blockchain-in-clinical-trials-design---distributed-ledger-technology-38119424224)
 
 ## Project Setup
 Initial setup was taken from [here](https://medium.com/@mvmurthy/full-stack-hello-world-voting-ethereum-dapp-tutorial-part-1-40d2d0d807c2).
