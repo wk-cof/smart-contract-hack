@@ -35,3 +35,33 @@ Open index.js and paste the result of the above command to the `VotingContract.a
 
 Then just open index.html in your browser.
 
+## Testing with [Remix](https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.18+commit.9cf6e910.js)
+* Paste your smart contract code in remix
+* In Remix go to the `Run` tab
+* Set the Environment dropdown to JavaScript VM
+    * You should now have an account with 100 Etherium on it in Account dropdown. You can switch to a different account at any time.
+* That's it. You should now be able to press the `Create` button to deploy your smart contract.
+
+#### Example contract for debugging
+```
+pragma solidity ^0.4.16;
+contract testContract {
+
+    uint value;
+    function testContract(uint _p) {
+        value = _p;
+    }
+
+    function setP(uint _n) payable {
+        value = _n;
+    }
+
+    function setNP(uint _n) {
+        value = _n;
+    }
+
+    function get () constant returns (uint) {
+        return value;
+    }
+}
+```
