@@ -1,68 +1,40 @@
-# SmartTrials
-> [BLOCKCHAIN IN CLINICAL TRIALS DESIGN - DISTRIBUTED LEDGER TECHNOLOGY HACKATHON](https://www.hackathon.com/event/hackathon-blockchain-in-clinical-trials-design---distributed-ledger-technology-38119424224)
+## Setup
+[All you need to know](http://truffleframework.com/boxes/webpack)
 
-## Project Setup
-Initial setup was taken from [here](https://medium.com/@mvmurthy/full-stack-hello-world-voting-ethereum-dapp-tutorial-part-1-40d2d0d807c2).
+## Run
 
-### Setup Dev environment
-Install dependencies in `package.json`
+### Run truffle
 ```bash
-npm install
+truffle develop
+```
+The above starts a local etherium network and creates 10 accounts with 100 etherium in them. E.g.
+
+```
+Accounts:
+(0) 0x627306090abab3a6e1400e9345bc60c78a8bef57
+(1) 0xf17f52151ebef6c7334fad080c5704d77216b732
+(2) 0xc5fdf4076b8f3a5357c5e395ab970b5b54098fef
+(3) 0x821aea9a577a9b44299b9c15c88cf3087f3b5544
+(4) 0x0d1d4e623d10f9fba5db95830f7d3839406c6af2
+(5) 0x2932b7a2355d6fecc4b5c0b6bd44cc31df247a2e
+(6) 0x2191ef87e392377ec08e7c08eb105ef5448eced5
+(7) 0x0f4f2ac550a1b4e2280d04c21cea7ebd822934b5
+(8) 0x6330a553fc93768f612722bb8c2ec78ac90b3bbc
+(9) 0x5aeda56215b167893e80b4fe645ba6d5bab767de
+
+Mnemonic: candy maple cake sugar pudding cream honey rich smooth crumble sweet treat
 ```
 
-### Run the local network
+### Run webapp
 ```bash
-./node_modules/.bin/testrpc
+npm run dev
 ```
-> more info on [testrpc](https://github.com/ethereumjs/testrpc)
-Notice that the testrpc creates 10 test accounts to play with automatically. These accounts come preloaded with 100 (fake) ethers.
+This wil launch a front-end on http://localhost:8080
 
-### Deploy the contract
-Run interactive node console:
-```bash
-node
-```
+### Point metamask to the new accounts
+* Switch MetaMask to localhost:9545
+* Log out of your current metamask by pressing Lock
+* Click on Restore from seed phrase
+* Enter the mnemonic from the truffle output above
 
-Open `./hello_world_voting/script.js` and paste the commands in that file to the node env one by one.
-
-> For the detailed description of each command, refer to the project setup link above.
-
-### Run the dapp
-In the node console from the previous section type
-```javascript
-deployedContract.address
-```
-Open index.js and paste the result of the above command to the `VotingContract.at` function (line 5).
-
-Then just open index.html in your browser.
-
-## Testing with [Remix](https://ethereum.github.io/browser-solidity/#version=soljson-v0.4.18+commit.9cf6e910.js)
-* Paste your smart contract code in remix
-* In Remix go to the `Run` tab
-* Set the Environment dropdown to JavaScript VM
-    * You should now have an account with 100 Etherium on it in Account dropdown. You can switch to a different account at any time.
-* That's it. You should now be able to press the `Create` button to deploy your smart contract.
-
-#### Example contract for debugging
-```
-pragma solidity ^0.4.16;
-contract testContract {
-
-    uint value;
-    function testContract(uint _p) {
-        value = _p;
-    }
-
-    function setP(uint _n) payable {
-        value = _n;
-    }
-
-    function setNP(uint _n) {
-        value = _n;
-    }
-
-    function get () constant returns (uint) {
-        return value;
-    }
-}
-```
+The above setup should let you launch the dapp.

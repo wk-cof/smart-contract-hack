@@ -37,6 +37,7 @@ contract SimpleStudy {
 
     mapping(address => StudyData) private patientsData;
     mapping(address => Patient[]) private patientsMap;
+    mapping(string => address) private providerMap;
 
     // Events
     event studyCreated(address creator);
@@ -71,6 +72,10 @@ contract SimpleStudy {
     }
 
     // Setters
+    function addProvider(string userName) public {
+        providerMap[userName] = msg.sender;
+    }
+
     function addPatient(string fullName, address patientAddress) public {
         var newPatient = Patient(patientAddress, fullName);
         patientsMap[msg.sender].push(newPatient);

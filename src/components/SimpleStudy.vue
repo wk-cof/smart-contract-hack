@@ -1,0 +1,87 @@
+<template>
+    <div>
+        <b-jumbotron
+            header="Simple Study"
+            lead="This is an example of a 4-week trial." >
+            <b-badge v-if="isStudyOwner" variant="info">You are the owner</b-badge>
+            <p>For each patient a CT must provide the following information</p>
+            <b-list-group>
+                <b-list-group-item>
+                    A filled in questionaire upon enrollment
+                </b-list-group-item>
+                <b-list-group-item>
+                    Body temperature after the week 1
+                </b-list-group-item>
+                <b-list-group-item>
+                    Body temperature after the week 2
+                </b-list-group-item>
+                <b-list-group-item>
+                    Body temperature after the week 3
+                </b-list-group-item>
+                <b-list-group-item>
+                    Body temperature after the week 4
+                </b-list-group-item>
+            </b-list-group>
+            <b-link href="">More info...</b-link>
+            <br>
+            <b-button variant="outline-success">Enroll</b-button>
+        </b-jumbotron>
+    </div>
+</template>
+
+<script>
+import simpleStudyArtifacts from '../../build/contracts/SimpleStudy.json';
+import { default as contract } from 'truffle-contract';
+
+export default {
+    name: 'SimpleStudy',
+    data: () => {
+        return {
+            studyOwner: '',
+            SimpleStudy: null,
+            accounts: []
+        };
+    },
+    computed: {
+        isStudyOwner: function() {
+            return this.studyOwner === this.accounts[0];
+        }
+    },
+    methods: {
+        getStudyOwner: function() {
+            return this.SimpleStudy.deployed().then(instance => {
+                return instance.getStudyOwner.call({from: this.accounts[0]});
+            }).then(ownerAddress => {
+                this.studyOwner = ownerAddress;
+            }).catch(e => {
+                console.error(e);
+            });
+        }
+    },
+    created: function() {
+        this.SimpleStudy = contract(simpleStudyArtifacts);
+        this.SimpleStudy.setProvider(web3.currentProvider);
+        /* global web3 */
+        let that = this;
+        web3.eth.getAccounts(function(err, accs) {
+            if (err != null) {
+                alert('There was an error fetching your accounts.');
+                return;
+            }
+            if (accs.length === 0) {
+                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+                return;
+            }
+            that.accounts = accs;
+            that.getStudyOwner();
+        });
+    }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.list-group {
+  flex: 1 0 50%;
+}
+</style>
