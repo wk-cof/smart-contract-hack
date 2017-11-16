@@ -12,8 +12,9 @@ npm install
 
 ### Run the local network
 ```bash
-./node_modules/.bin/testprc
+./node_modules/.bin/testrpc
 ```
+> more info on [testrpc](https://github.com/ethereumjs/testrpc)
 Notice that the testrpc creates 10 test accounts to play with automatically. These accounts come preloaded with 100 (fake) ethers.
 
 ### Deploy the contract
