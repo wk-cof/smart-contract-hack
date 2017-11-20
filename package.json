@@ -1,7 +1,6 @@
 {
-  "name": "deleteme",
+  "name": "SmartTrials",
   "version": "1.0.0",
-  "description": "A Vue.js project",
   "author": "Mikhail Gorbachev <mgorbachev@factset.com>",
   "private": true,
   "scripts": {
