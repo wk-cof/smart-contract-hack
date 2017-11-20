@@ -47,7 +47,7 @@ let App = {
       accounts = accs;
       account = accounts[0];
 
-      self.refreshBalance();
+      // self.refreshBalance();
     });
   },
 

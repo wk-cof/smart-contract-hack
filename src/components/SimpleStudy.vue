@@ -3,6 +3,7 @@
         <b-jumbotron
             header="Simple Study"
             lead="This is an example of a 4-week trial." >
+            <b-badge v-if="isStudyOwner" variant="info">You are the owner</b-badge>
             <p>For each patient a CT must provide the following information</p>
             <b-list-group>
                 <b-list-group-item>
@@ -24,9 +25,6 @@
             <b-link href="">More info...</b-link>
             <br>
             <b-button variant="outline-success">Enroll</b-button>
-
-
-
         </b-jumbotron>
 
     </div>
@@ -37,27 +35,59 @@
 import simpleStudyArtifacts from '../../build/contracts/SimpleStudy.json';
 import { default as contract } from 'truffle-contract';
 
+
+let myData = {
+    studyOwner: null,
+    accounts: null,
+    account: null
+}
+
 let SimpleStudy = contract(simpleStudyArtifacts);
 SimpleStudy.setProvider(web3.currentProvider);
 
-// // Get the initial account balance so it can be displayed.
-// web3.eth.getAccounts(function(err, accs) {
-//     if (err != null) {
-//     alert("There was an error fetching your accounts.");
-//     return;
-//     }
+web3.eth.getAccounts(function(err, accs) {
+    if (err != null) {
+        alert('There was an error fetching your accounts.');
+        return;
+    }
 
-//     if (accs.length == 0) {
-//     alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
-//     return;
-//     }
+    if (accs.length === 0) {
+        alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+        return;
+    }
+    myData.accounts = accs;
+    myData.account = accounts[0];
+    getStudyOwner();
+});
 
-//     accounts = accs;
-//     account = accounts[0];
-
-//     self.refreshBalance();
+const getStudyOwner = () => {
+    return SimpleStudy.deployed().then(instance => {
+        return instance.getStudyOwner.call({from: myData.account});
+    }).then(ownerAddress => {
+        myData.studyOwner = ownerAddress;
+    }).catch(e => {
+        console.log(e);
+        // this.setStatus('Error getting study owner; see log.');
+    });
+};
 export default {
-  SimpleStudy
+    name: 'SimpleStudy',
+    data: () => {
+        return {
+            studyOwner: myData.studyOwner,
+            isStudyOwner: false
+        };
+    },
+    watch: {
+        studyOwner: () => {
+            this.getStudyOwner();
+        }
+    },
+    methods: {
+        getStudyOwner: () => {
+            this.isStudyOwner = studyOwner === account;
+        }
+    }
 };
 </script>
 
