@@ -33,12 +33,37 @@
 </template>
 
 <script>
+/* global web3 */
+import simpleStudyArtifacts from '../../build/contracts/SimpleStudy.json';
+import { default as contract } from 'truffle-contract';
 
+let SimpleStudy = contract(simpleStudyArtifacts);
+SimpleStudy.setProvider(web3.currentProvider);
+
+// // Get the initial account balance so it can be displayed.
+// web3.eth.getAccounts(function(err, accs) {
+//     if (err != null) {
+//     alert("There was an error fetching your accounts.");
+//     return;
+//     }
+
+//     if (accs.length == 0) {
+//     alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+//     return;
+//     }
+
+//     accounts = accs;
+//     account = accounts[0];
+
+//     self.refreshBalance();
+export default {
+  SimpleStudy
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .list-group {
-        flex: 1 0 50%;
-    }
+.list-group {
+  flex: 1 0 50%;
+}
 </style>
