@@ -26,27 +26,12 @@
             <br>
             <b-button variant="outline-success">Enroll</b-button>
         </b-jumbotron>
-
     </div>
 </template>
 
 <script>
 import simpleStudyArtifacts from '../../build/contracts/SimpleStudy.json';
 import { default as contract } from 'truffle-contract';
-
-// web3.eth.getAccounts(function(err, accs) {
-//     if (err != null) {
-//         alert('There was an error fetching your accounts.');
-//         return;
-//     }
-
-//     if (accs.length === 0) {
-//         alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-//         return;
-//     }
-//     myData.accounts = accs;
-//     myData.account = myData.accounts[0];
-// });
 
 export default {
     name: 'SimpleStudy',
@@ -57,11 +42,6 @@ export default {
             accounts: []
         };
     },
-    // watch: {
-    //     studyOwner: (val) => {
-    //         this.isStudyOwner = this.studyOwner === this.accounts[0];
-    //     }
-    // },
     computed: {
         isStudyOwner: function() {
             return this.studyOwner === this.accounts[0];
@@ -74,8 +54,7 @@ export default {
             }).then(ownerAddress => {
                 this.studyOwner = ownerAddress;
             }).catch(e => {
-                console.log(e);
-                // this.setStatus('Error getting study owner; see log.');
+                console.error(e);
             });
         }
     },
