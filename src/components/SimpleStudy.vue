@@ -31,62 +31,71 @@
 </template>
 
 <script>
-/* global web3 */
 import simpleStudyArtifacts from '../../build/contracts/SimpleStudy.json';
 import { default as contract } from 'truffle-contract';
 
+// web3.eth.getAccounts(function(err, accs) {
+//     if (err != null) {
+//         alert('There was an error fetching your accounts.');
+//         return;
+//     }
 
-let myData = {
-    studyOwner: null,
-    accounts: null,
-    account: null
-}
+//     if (accs.length === 0) {
+//         alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+//         return;
+//     }
+//     myData.accounts = accs;
+//     myData.account = myData.accounts[0];
+// });
 
-let SimpleStudy = contract(simpleStudyArtifacts);
-SimpleStudy.setProvider(web3.currentProvider);
-
-web3.eth.getAccounts(function(err, accs) {
-    if (err != null) {
-        alert('There was an error fetching your accounts.');
-        return;
-    }
-
-    if (accs.length === 0) {
-        alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-        return;
-    }
-    myData.accounts = accs;
-    myData.account = accounts[0];
-    getStudyOwner();
-});
-
-const getStudyOwner = () => {
-    return SimpleStudy.deployed().then(instance => {
-        return instance.getStudyOwner.call({from: myData.account});
-    }).then(ownerAddress => {
-        myData.studyOwner = ownerAddress;
-    }).catch(e => {
-        console.log(e);
-        // this.setStatus('Error getting study owner; see log.');
-    });
-};
 export default {
     name: 'SimpleStudy',
     data: () => {
         return {
-            studyOwner: myData.studyOwner,
-            isStudyOwner: false
+            studyOwner: '',
+            SimpleStudy: null,
+            accounts: []
         };
     },
-    watch: {
-        studyOwner: () => {
-            this.getStudyOwner();
+    // watch: {
+    //     studyOwner: (val) => {
+    //         this.isStudyOwner = this.studyOwner === this.accounts[0];
+    //     }
+    // },
+    computed: {
+        isStudyOwner: function() {
+            return this.studyOwner === this.accounts[0];
         }
     },
     methods: {
-        getStudyOwner: () => {
-            this.isStudyOwner = studyOwner === account;
+        getStudyOwner: function() {
+            return this.SimpleStudy.deployed().then(instance => {
+                return instance.getStudyOwner.call({from: this.accounts[0]});
+            }).then(ownerAddress => {
+                this.studyOwner = ownerAddress;
+            }).catch(e => {
+                console.log(e);
+                // this.setStatus('Error getting study owner; see log.');
+            });
         }
+    },
+    created: function() {
+        this.SimpleStudy = contract(simpleStudyArtifacts);
+        this.SimpleStudy.setProvider(web3.currentProvider);
+        /* global web3 */
+        let that = this;
+        web3.eth.getAccounts(function(err, accs) {
+            if (err != null) {
+                alert('There was an error fetching your accounts.');
+                return;
+            }
+            if (accs.length === 0) {
+                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+                return;
+            }
+            that.accounts = accs;
+            that.getStudyOwner();
+        });
     }
 };
 </script>
