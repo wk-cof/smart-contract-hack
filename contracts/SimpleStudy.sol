@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.0;
 
 /**
  * Description of the smart contract
@@ -15,6 +15,7 @@ pragma solidity ^0.4.18;
 contract SimpleStudy {
 
     address studyOwner;
+
     uint8 private constant MAX_PATIENTS = 2;
 
     struct Patient {
@@ -34,68 +35,73 @@ contract SimpleStudy {
         uint[] tempData;
     }
 
+    struct User {
+        string userName;
+        bool isValue;
+    }
+
     mapping(address => StudyData) private patientsData;
     mapping(address => Patient[]) private patientsMap;
-    mapping(string => address) private providerMap;
-    mapping(address => string) private userNames;
+    mapping(address => User) private userNames;
 
-    // Events
-    event studyCreated(address creator);
+    event StudyCreated(address creator, string studyUserName);
 
     function SimpleStudy() public {
         studyOwner = msg.sender;
-        userNames[msg.sender] = "StudyOwner";
-        studyCreated(studyOwner);
+        StudyCreated(studyOwner, "studyOwner");
+        userNames[msg.sender] = User("studyOwner", true);
     }
 
-    // Getters
     function getStudyOwner() public constant returns(address) {
         return studyOwner;
     }
 
+    function isUserRegistered(address userAddress) private constant returns(bool) {
+        var userName = userNames[userAddress];
+        return userName.isValue;
+    }
+
+    function register(string userName) public {
+        require(isUserRegistered(msg.sender));
+        require(bytes(userName).length > 4);
+        userNames[msg.sender] = User(userName, true);
+    }
+
     function getMyUsername() public constant returns(string) {
-        // assert(isUserRegistered(msg.sender));
-        return userNames[msg.sender];
+        assert(isUserRegistered(msg.sender));
+        return userNames[msg.sender].userName;
     }
 
-    function getPatient(address patientAddress) private constant returns(Patient) {
-        for (uint i = 0; i < patientsMap[msg.sender].length; i++) {
-            if (patientsMap[msg.sender][i].patientAddress == patientAddress) {
-                return patientsMap[msg.sender][i];
-            }
-        }
-    }
+    // function getPatient(address patientAddress) private constant returns(Patient) {
+    //     for (uint i = 0; i < patientsMap[msg.sender].length; i++) {
+    //         if (patientsMap[msg.sender][i].patientAddress == patientAddress) {
+    //             return patientsMap[msg.sender][i];
+    //         }
+    //     }
+    // }
 
-    function getPatientName(address patientAddress) public constant returns(string) {
-        var patient = getPatient(patientAddress);
-        return patient.fullName;
-    }
+    // function getPatientName(address patientAddress) public constant returns(string) {
+    //     var patient = getPatient(patientAddress);
+    //     return patient.fullName;
+    // }
 
-    function getStudyDataForPatient(address patientAddress) public constant returns(string, string, uint8, string, uint, uint, uint, uint) {
-        var patientStudyData = patientsData[patientAddress];
-        return (patientStudyData.questionaire.firstName, patientStudyData.questionaire.lastName, patientStudyData.questionaire.age, patientStudyData.questionaire.gender,
-            patientStudyData.tempData[0], patientStudyData.tempData[1], patientStudyData.tempData[2], patientStudyData.tempData[3]);
-    }
+    // function getStudyDataForPatient(address patientAddress) public constant returns(string, string, uint8, string, uint, uint, uint, uint) {
+    //     var patientStudyData = patientsData[patientAddress];
+    //     return (patientStudyData.questionaire.firstName, patientStudyData.questionaire.lastName, patientStudyData.questionaire.age, patientStudyData.questionaire.gender,
+    //         patientStudyData.tempData[0], patientStudyData.tempData[1], patientStudyData.tempData[2], patientStudyData.tempData[3]);
+    // }
 
-    // Setters
-    function addProvider(string userName) public {
-        providerMap[userName] = msg.sender;
-    }
 
-    function addPatient(string fullName, address patientAddress) public {
-        var newPatient = Patient(patientAddress, fullName);
-        patientsMap[msg.sender].push(newPatient);
-    }
 
-    function submitQuestionaireForPatient(address patientAddress, string firstName, string lastName, uint8 age, string gender) public {
-        var newQuestionaire = Questionaire(firstName, lastName, age, gender);
-        uint[] memory newTempData = new uint[](4);
-        var newStudyData = StudyData(newQuestionaire, newTempData);
-        patientsData[patientAddress] = newStudyData;
-    }
+    // function submitQuestionaireForPatient(address patientAddress, string firstName, string lastName, uint8 age, string gender) public {
+    //     var newQuestionaire = Questionaire(firstName, lastName, age, gender);
+    //     uint[] memory newTempData = new uint[](4);
+    //     var newStudyData = StudyData(newQuestionaire, newTempData);
+    //     patientsData[patientAddress] = newStudyData;
+    // }
 
-    function submitTemperature(address patientAddress, uint weekNumber, uint tempData) public {
-        var studyData = patientsData[patientAddress];
-        studyData.tempData[weekNumber] = tempData;
-    }
+    // function submitTemperature(address patientAddress, uint weekNumber, uint tempData) public {
+    //     var studyData = patientsData[patientAddress];
+    //     studyData.tempData[weekNumber] = tempData;
+    // }
 }

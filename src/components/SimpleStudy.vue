@@ -3,7 +3,6 @@
         <b-jumbotron
             header="Simple Study"
             lead="This is an example of a 4-week trial." >
-            <b-badge v-if="isStudyOwner" variant="info">You are the owner</b-badge>
             <p>For each patient a CT must provide the following information</p>
             <b-list-group>
                 <b-list-group-item>
@@ -24,8 +23,12 @@
             </b-list-group>
             <b-link href="">More info...</b-link>
             <br>
-            <b-button variant="outline-success">Enroll</b-button>
         </b-jumbotron>
+        <row v-if="isRegistered" class="userGreeter">
+            <h3>Welcome back {{userName}}</h3 v-else="">
+            <b-badge v-if="isStudyOwner" variant="info">You are the owner</b-badge>
+        </row>
+        <b-button v-else variant="outline-success">Enroll</b-button>
     </div>
 </template>
 
@@ -40,12 +43,15 @@ export default {
             studyOwner: '',
             SimpleStudy: null,
             accounts: [],
-            username: null
+            userName: null
         };
     },
     computed: {
         isStudyOwner: function() {
             return this.studyOwner === this.accounts[0];
+        },
+        isRegistered: function() {
+            return this.userName != null;
         }
     },
     methods: {
@@ -93,7 +99,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.list-group {
-  flex: 1 0 50%;
-}
 </style>
