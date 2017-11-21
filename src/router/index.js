@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import MetaCoin from '@/components/MetaCoin'
 import SimpleStudyDescription from '@/components/SimpleStudyDescription'
 import SimpleStudy from '@/components/SimpleStudy'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -15,11 +13,6 @@ export default new Router({
       path: '/',
       name: 'SimpleStudyDescription',
       component: SimpleStudyDescription
-    },
-    {
-      path: '/metacoin',
-      name: 'MetaCoin',
-      component: MetaCoin
     },
     {
       path: '/simplestudy',
