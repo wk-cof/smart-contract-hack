@@ -3,7 +3,6 @@
         <b-jumbotron
             header="Simple Study"
             lead="This is an example of a 4-week trial." >
-            <b-badge v-if="isStudyOwner" variant="info">You are the owner</b-badge>
             <p>For each patient a CT must provide the following information</p>
             <b-list-group>
                 <b-list-group-item>
@@ -24,8 +23,14 @@
             </b-list-group>
             <b-link href="">More info...</b-link>
             <br>
-            <b-button variant="outline-success">Enroll</b-button>
         </b-jumbotron>
+        <!-- <row v-if="isRegistered" class="userGreeter">
+            <b-badge v-if="isStudyOwner" variant="info">owner</b-badge>
+            <h3>You are registered as: "{{userName}}"</h3>
+            <b-button variant="primary" href="#/study">Go to study</b-button>
+        </row>
+
+        <b-button v-else variant="outline-success">Enroll</b-button> -->
     </div>
 </template>
 
@@ -40,12 +45,15 @@ export default {
             studyOwner: '',
             SimpleStudy: null,
             accounts: [],
-            username: null
+            userName: null
         };
     },
     computed: {
         isStudyOwner: function() {
             return this.studyOwner === this.accounts[0];
+        },
+        isRegistered: function() {
+            return this.userName != null;
         }
     },
     methods: {
@@ -84,8 +92,8 @@ export default {
                 return;
             }
             that.accounts = accs;
-            that.getStudyOwner();
-            that.getMyUserName();
+            // that.getStudyOwner();
+            // that.getMyUserName();
         });
     }
 };
@@ -93,7 +101,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.list-group {
-  flex: 1 0 50%;
-}
 </style>
