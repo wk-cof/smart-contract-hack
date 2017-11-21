@@ -24,13 +24,13 @@
             <b-link href="">More info...</b-link>
             <br>
         </b-jumbotron>
-        <row v-if="isRegistered" class="userGreeter">
+        <!-- <row v-if="isRegistered" class="userGreeter">
             <b-badge v-if="isStudyOwner" variant="info">owner</b-badge>
             <h3>You are registered as: "{{userName}}"</h3>
             <b-button variant="primary" href="#/study">Go to study</b-button>
         </row>
 
-        <b-button v-else variant="outline-success">Enroll</b-button>
+        <b-button v-else variant="outline-success">Enroll</b-button> -->
     </div>
 </template>
 
@@ -92,8 +92,8 @@ export default {
                 return;
             }
             that.accounts = accs;
-            that.getStudyOwner();
-            that.getMyUserName();
+            // that.getStudyOwner();
+            // that.getMyUserName();
         });
     }
 };

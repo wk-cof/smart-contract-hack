@@ -19,20 +19,12 @@
                     <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
                 </b-nav-form>
 
-                <b-nav-item-dropdown text="Lang" right>
-                    <b-dropdown-item href="#">EN</b-dropdown-item>
-                    <b-dropdown-item href="#">ES</b-dropdown-item>
-                    <b-dropdown-item href="#">RU</b-dropdown-item>
-                    <b-dropdown-item href="#">FA</b-dropdown-item>
-                </b-nav-item-dropdown>
-
                 <b-nav-item-dropdown right>
                     <!-- Using button-content slot -->
                     <template slot="button-content">
-                        <em>User</em>
+                        <em>{{userNameComputed}}</em>
                     </template>
-                    <b-dropdown-item href="#">Profile</b-dropdown-item>
-                    <b-dropdown-item href="#">Signout</b-dropdown-item>
+                    <b-dropdown-item>Address: {{account}}</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
 
@@ -43,9 +35,41 @@
 </template>
 
 <script>
-    export default {
-        name: 'app'
-    };
+import SimpleStudy from './services/SimpleStudyProvider';
+
+export default {
+    name: 'app',
+    data: function() {
+        return {
+            accounts: [],
+            userName: ''
+        };
+    },
+    computed: {
+        account: function() {
+            return this.accounts[0] || 'Undefined';
+        },
+        userNameComputed: function() {
+            return this.userName;
+        }
+    },
+    methods: {
+        fetchAccounts() {
+            return SimpleStudy.accountsPromise.then(accs => {
+                this.accounts = accs;
+            });
+        },
+        fetchUserName() {
+            return SimpleStudy.userNamePromise.then(userName => {
+                this.userName = userName;
+            });
+        }
+    },
+    created: function() {
+        this.fetchAccounts();
+        this.fetchUserName();
+    }
+};
 </script>
 
 <style>
