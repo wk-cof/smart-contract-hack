@@ -9,7 +9,6 @@
 
             <b-navbar-nav>
                 <b-nav-item href="#/metacoin">MetaCoin example</b-nav-item>
-                <b-nav-item href="#/simplestudy">Simple Study example</b-nav-item>
             </b-navbar-nav>
 
             <!-- Right aligned nav items -->
