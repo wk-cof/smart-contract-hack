@@ -39,7 +39,8 @@ export default {
         return {
             studyOwner: '',
             SimpleStudy: null,
-            accounts: []
+            accounts: [],
+            username: null
         };
     },
     computed: {
@@ -55,6 +56,16 @@ export default {
                 this.studyOwner = ownerAddress;
             }).catch(e => {
                 console.error(e);
+            });
+        },
+        getMyUserName: function() {
+            let account = this.accounts[0];
+            return this.SimpleStudy.deployed().then(instance => {
+                return instance.getMyUsername.call({from: account});
+            }).then(userName => {
+                this.userName = userName;
+            }).catch(e => {
+                this.userName = null;
             });
         }
     },
@@ -74,6 +85,7 @@ export default {
             }
             that.accounts = accs;
             that.getStudyOwner();
+            that.getMyUserName();
         });
     }
 };

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.18;
 
 /**
  * Description of the smart contract
@@ -15,7 +15,6 @@ pragma solidity ^0.4.0;
 contract SimpleStudy {
 
     address studyOwner;
-
     uint8 private constant MAX_PATIENTS = 2;
 
     struct Patient {
@@ -38,18 +37,25 @@ contract SimpleStudy {
     mapping(address => StudyData) private patientsData;
     mapping(address => Patient[]) private patientsMap;
     mapping(string => address) private providerMap;
+    mapping(address => string) private userNames;
 
     // Events
     event studyCreated(address creator);
 
     function SimpleStudy() public {
         studyOwner = msg.sender;
+        userNames[msg.sender] = "StudyOwner";
         studyCreated(studyOwner);
     }
 
     // Getters
     function getStudyOwner() public constant returns(address) {
         return studyOwner;
+    }
+
+    function getMyUsername() public constant returns(string) {
+        // assert(isUserRegistered(msg.sender));
+        return userNames[msg.sender];
     }
 
     function getPatient(address patientAddress) private constant returns(Patient) {
