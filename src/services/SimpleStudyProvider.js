@@ -30,7 +30,6 @@ let userNamePromise = accountsPromise.then(accs => {
 
 
 export default {
-    contract: SimpleStudy,
     accountsPromise,
     userNamePromise
 };

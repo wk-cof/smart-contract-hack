@@ -11,18 +11,10 @@
                 <b-nav-item href="#/metacoin">MetaCoin example</b-nav-item>
             </b-navbar-nav>
 
-            <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
-
-                <b-nav-form>
-                    <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-                    <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                </b-nav-form>
-
                 <b-nav-item-dropdown right>
-                    <!-- Using button-content slot -->
                     <template slot="button-content">
-                        <em>{{userNameComputed}}</em>
+                        <em>{{userName}}</em>
                     </template>
                     <b-dropdown-item>Address: {{account}}</b-dropdown-item>
                 </b-nav-item-dropdown>
@@ -48,9 +40,6 @@ export default {
     computed: {
         account: function() {
             return this.accounts[0] || 'Undefined';
-        },
-        userNameComputed: function() {
-            return this.userName;
         }
     },
     methods: {
@@ -62,6 +51,8 @@ export default {
         fetchUserName() {
             return SimpleStudy.userNamePromise.then(userName => {
                 this.userName = userName;
+            }).catch(e => {
+                this.userName = 'Not Registered';
             });
         }
     },
