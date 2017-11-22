@@ -38,3 +38,19 @@ This wil launch a front-end on http://localhost:8080
 * Enter the mnemonic from the truffle output above
 
 The above setup should let you launch the dapp.
+
+## Debug contract
+Get accounts in truffle console and use the instance of the study you deployed
+```
+var accounts;
+// in web front-end, use an onload listener and similar to this manual flow ...
+web3.eth.getAccounts(function(err,res) { accounts = res; });
+SimpleStudy.deployed().then(instance => instance.getMyUserName.call({from: accounts[2]}))
+SimpleStudy.deployed().then(instance => instance.register("222222", {from: accounts[2]}))
+```
+
+If you want to re-deploy the contract
+```
+compile
+migrate --reset
+```

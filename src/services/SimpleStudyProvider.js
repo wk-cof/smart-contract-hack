@@ -21,15 +21,22 @@ let accountsPromise = new Promise(function(resolve, reject) {
     });
 });
 
-let userNamePromise = accountsPromise.then(accs => {
-    let accounts = accs;
+let studyInstancePromise = accountsPromise.then(accs => {
     return SimpleStudy.deployed().then(instance => {
-        return instance.getMyUsername.call({from: accounts[0]});
+        return [instance, accs];
     });
-})
+});
 
+let userNamePromise = studyInstancePromise.then(([instance, accounts]) => {
+    return instance.getMyUsername.call({from: accounts[0]});
+});
 
 export default {
     accountsPromise,
-    userNamePromise
+    userNamePromise,
+    addUser(userName) {
+        return studyInstancePromise.then(([instance, accounts]) => {
+            return instance.register(userName, {from: accounts[0]});
+        });
+    }
 };

@@ -62,14 +62,18 @@ contract SimpleStudy {
     }
 
     function register(string userName) public {
-        require(isUserRegistered(msg.sender));
-        require(bytes(userName).length > 4);
+        // require(!isUserRegistered(msg.sender));
+        // require(bytes(userName).length > 4);
         userNames[msg.sender] = User(userName, true);
     }
 
-    function getMyUsername() public constant returns(string) {
+    function getMyUserName() public constant returns(string) {
         assert(isUserRegistered(msg.sender));
         return userNames[msg.sender].userName;
+    }
+
+    function getUserName(address addr) public constant returns(string) {
+        return userNames[addr].userName;
     }
 
     // function getPatient(address patientAddress) private constant returns(Patient) {
