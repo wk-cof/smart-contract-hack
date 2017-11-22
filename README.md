@@ -43,7 +43,6 @@ The above setup should let you launch the dapp.
 Get accounts in truffle console and use the instance of the study you deployed
 ```
 var accounts;
-// in web front-end, use an onload listener and similar to this manual flow ...
 web3.eth.getAccounts(function(err,res) { accounts = res; });
 SimpleStudy.deployed().then(instance => instance.getMyUserName.call({from: accounts[2]}))
 SimpleStudy.deployed().then(instance => instance.register("222222", {from: accounts[2]}))

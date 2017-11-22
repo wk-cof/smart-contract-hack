@@ -8,6 +8,20 @@
             </b-form-group>
             <b-button type="submit" variant="primary">Register</b-button>
         </b-form>
+        <b-alert
+                :show="alert.countDown"
+                dismissible
+                :variant="alert.variant"
+                @dismissed="alert.countDown = 0"
+                @dismiss-count-down="countDownTick">
+            <p> in {{alert.countDown}} seconds...</p>
+            <b-progress :variant="alert.variant"
+                        :max="alert.maxCountDown"
+                        :value="alert.countDown"
+                        height="4px">
+            </b-progress>
+        </b-alert>
+
     </div>
 </template>
 
@@ -20,6 +34,13 @@ export default {
         return {
             form: {
                 userName: ''
+            },
+            alert: {
+                show: true,
+                variant: 'success',
+                maxCountDown: 5,
+                countDown: 0,
+                message: ''
             }
         };
     },
@@ -27,11 +48,19 @@ export default {
         onSubmit() {
             SimpleStudyProvider.addUser(this.form.userName)
                 .then(() => {
-                    console.log('User Created');
+                    // this.$router.push('/');
+                    this.alert.variant = 'success';
+                    this.alert.countDown = this.alert.maxCountDown;
+                    alert.message = `User ${this.form.userName} was successfully created. Automatically navigating to dashboard`;
                 })
                 .catch(e => {
-                    console.log(e);
+                    // this.$router.push('/');
+                    this.alert.variant = 'error';
+                    this.alert.countDown = this.alert.maxCountDown;
                 });
+        },
+        countDownTick(newCountDown) {
+            this.alert.countDown = newCountDown;
         }
     }
 };

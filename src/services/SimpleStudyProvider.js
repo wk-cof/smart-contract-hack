@@ -28,7 +28,7 @@ let studyInstancePromise = accountsPromise.then(accs => {
 });
 
 let userNamePromise = studyInstancePromise.then(([instance, accounts]) => {
-    return instance.getMyUsername.call({from: accounts[0]});
+    return instance.getMyUserName.call({from: accounts[0]});
 });
 
 export default {
