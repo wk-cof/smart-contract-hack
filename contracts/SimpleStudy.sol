@@ -18,11 +18,6 @@ contract SimpleStudy {
 
     uint8 private constant MAX_PATIENTS = 2;
 
-    struct Patient {
-        address patientAddress;
-        string fullName;
-    }
-
     struct Questionaire {
         string firstName;
         string lastName;
@@ -37,19 +32,26 @@ contract SimpleStudy {
 
     struct User {
         string userName;
+        address[] patients;
         bool isValue;
     }
 
-    mapping(address => StudyData) private patientsData;
-    mapping(address => Patient[]) private patientsMap;
-    mapping(address => User) private userNames;
+    struct Patient {
+        string firstName;
+        string lastName;
+        // StudyData studyData;
+    }
+
+    mapping(address => User) private userInfoMap;
+    mapping(address => Patient) private patientInfoMap;
 
     event StudyCreated(address creator, string studyUserName);
 
     function SimpleStudy() public {
         studyOwner = msg.sender;
         StudyCreated(studyOwner, "studyOwner");
-        userNames[msg.sender] = User("studyOwner", true);
+        address[] memory patientAddresses;
+        userInfoMap[msg.sender] = User("studyOwner", patientAddresses, true);
     }
 
     function getStudyOwner() public constant returns(address) {
@@ -57,19 +59,51 @@ contract SimpleStudy {
     }
 
     function isUserRegistered(address userAddress) private constant returns(bool) {
-        var userName = userNames[userAddress];
+        var userName = userInfoMap[userAddress];
         return userName.isValue;
     }
 
     function register(string userName) public {
-        require(isUserRegistered(msg.sender));
+        require(!isUserRegistered(msg.sender));
         require(bytes(userName).length > 4);
-        userNames[msg.sender] = User(userName, true);
+        address[] memory patientAddresses;
+        userInfoMap[msg.sender] = User(userName, patientAddresses, true);
     }
 
-    function getMyUsername() public constant returns(string) {
+    function getMyUserName() public constant returns(string) {
         assert(isUserRegistered(msg.sender));
-        return userNames[msg.sender].userName;
+        return userInfoMap[msg.sender].userName;
+    }
+
+    function isPatientEnrolled(address patientAddress) private constant returns(bool) {
+        assert(isUserRegistered(msg.sender));
+        var myPatients = userInfoMap[msg.sender].patients;
+        for (uint idx = 0; idx < myPatients.length; idx ++) {
+            if (myPatients[idx] == patientAddress) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function getMyPatients() public constant returns(address[]) {
+        assert(isUserRegistered(msg.sender));
+        return userInfoMap[msg.sender].patients;
+    }
+
+    function getMyPatientName(address patientAddress) public constant returns(string, string) {
+        assert(isUserRegistered(msg.sender));
+        // todo: only return info of patients that belong to the current user
+        return (patientInfoMap[patientAddress].firstName, patientInfoMap[patientAddress].lastName);
+    }
+
+    function enrollPatient(address patientAddress, string firstName, string lastName) public {
+        assert(isUserRegistered(msg.sender));
+        assert(!isPatientEnrolled(patientAddress));
+        var myPatients = userInfoMap[msg.sender].patients;
+        var newPatient = Patient(firstName, lastName);
+        myPatients.push(patientAddress);
+        patientInfoMap[patientAddress] = newPatient;
     }
 
     // function getPatient(address patientAddress) private constant returns(Patient) {

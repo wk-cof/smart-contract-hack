@@ -1,104 +1,61 @@
 <template>
     <div>
-        <b-jumbotron
-            header="Simple Study"
-            lead="This is an example of a 4-week trial." >
-            <p>For each patient a CT must provide the following information</p>
-            <b-list-group>
-                <b-list-group-item>
-                    A filled in questionaire upon enrollment
-                </b-list-group-item>
-                <b-list-group-item>
-                    Body temperature after the week 1
-                </b-list-group-item>
-                <b-list-group-item>
-                    Body temperature after the week 2
-                </b-list-group-item>
-                <b-list-group-item>
-                    Body temperature after the week 3
-                </b-list-group-item>
-                <b-list-group-item>
-                    Body temperature after the week 4
-                </b-list-group-item>
-            </b-list-group>
-            <b-link href="">More info...</b-link>
-            <br>
-        </b-jumbotron>
-        <!-- <row v-if="isRegistered" class="userGreeter">
-            <b-badge v-if="isStudyOwner" variant="info">owner</b-badge>
-            <h3>You are registered as: "{{userName}}"</h3>
-            <b-button variant="primary" href="#/study">Go to study</b-button>
-        </row>
-
-        <b-button v-else variant="outline-success">Enroll</b-button> -->
+        Enrolled patients
+        <ul>
+            <li v-for="patient in patients">{{patient}}</li>
+        </ul>
+        <h3>Enroll a patient</h3>
+        <b-form @submit="onPatientRegister">
+            <b-form-group id="enrollPatientAddress"
+                            label="Patient's Wallet Address:" label-for="walletAddressInput">
+                <b-form-input id="walletAddressInput"
+                            type="text" v-model="form.address" required
+                            description="Make sure that the patient has the private key for the wallet you provide"
+                            placeholder="e.g. 0x5aeda56215b167893e80b4fe645ba6d5bab767de"
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group id="enrollPatientFirstName"
+                            label="First Name:" label-for="firstNameInput">
+                <b-form-input id="firstNameInput"
+                            type="text" v-model="form.firstName" required
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group id="enrollPatientLastName"
+                            label="Last Name:" label-for="lastNameInput">
+                <b-form-input id="lastNameInput"
+                            type="text" v-model="form.lastName" required
+                ></b-form-input>
+            </b-form-group>
+            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button type="reset" variant="secondary">Reset</b-button>
+        </b-form>
     </div>
 </template>
 
 <script>
-import simpleStudyArtifacts from '../../build/contracts/SimpleStudy.json';
-import { default as contract } from 'truffle-contract';
-
 export default {
     name: 'SimpleStudy',
     data: () => {
         return {
-            studyOwner: '',
-            SimpleStudy: null,
-            accounts: [],
-            userName: null
+            patients: ['John Doe', 'Alice Foo'],
+            form: {
+                firstName: '',
+                lastName: '',
+                address: ''
+            }
         };
     },
     computed: {
-        isStudyOwner: function() {
-            return this.studyOwner === this.accounts[0];
-        },
-        isRegistered: function() {
-            return this.userName != null;
-        }
     },
     methods: {
-        getStudyOwner: function() {
-            return this.SimpleStudy.deployed().then(instance => {
-                return instance.getStudyOwner.call({from: this.accounts[0]});
-            }).then(ownerAddress => {
-                this.studyOwner = ownerAddress;
-            }).catch(e => {
-                console.error(e);
-            });
-        },
-        getMyUserName: function() {
-            let account = this.accounts[0];
-            return this.SimpleStudy.deployed().then(instance => {
-                return instance.getMyUsername.call({from: account});
-            }).then(userName => {
-                this.userName = userName;
-            }).catch(e => {
-                this.userName = null;
-            });
+        onPatientRegister() {
+
         }
     },
     created: function() {
-        this.SimpleStudy = contract(simpleStudyArtifacts);
-        this.SimpleStudy.setProvider(web3.currentProvider);
-        /* global web3 */
-        let that = this;
-        web3.eth.getAccounts(function(err, accs) {
-            if (err != null) {
-                alert('There was an error fetching your accounts.');
-                return;
-            }
-            if (accs.length === 0) {
-                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-                return;
-            }
-            that.accounts = accs;
-            // that.getStudyOwner();
-            // that.getMyUserName();
-        });
     }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

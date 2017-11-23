@@ -24,8 +24,8 @@
             <b-link href="">More info...</b-link>
             <br>
         </b-jumbotron>
-        <b-button v-if="isRegistered" variant="primary">Go to study</b-button>
-        <b-button v-else variant="primary">Register</b-button>
+        <b-button v-if="isRegistered" variant="primary" @click="goToSimpleStudy">Go to study</b-button>
+        <b-button v-else variant="primary" @click="goToRegister">Register</b-button>
     </div>
 </template>
 
@@ -45,6 +45,12 @@ export default {
             }).catch(e => {
                 this.isRegistered = false;
             });
+        },
+        goToSimpleStudy() {
+            return this.$router.push('simplestudy');
+        },
+        goToRegister() {
+            return this.$router.push('register');
         }
     },
     created: function() {
