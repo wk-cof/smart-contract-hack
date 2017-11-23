@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import SimpleStudyDescription from '@/components/SimpleStudyDescription'
 import SimpleStudy from '@/components/SimpleStudy'
 import Register from '@/components/Register'
+import EnrollPatient from '@/components/EnrollPatient'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/enrollpatient',
+      name: 'EnrollPatient',
+      component: EnrollPatient
     }
   ]
 })
